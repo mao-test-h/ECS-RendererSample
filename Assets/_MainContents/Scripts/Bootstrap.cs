@@ -63,12 +63,9 @@ namespace MainContents
                 entityManager = World.Active.CreateManager<EntityManager>();
 
                 // デフォルトで用意されているTransform周りのComponentSystem
-                //      - 「Position」「Rotation」「Scale」と言うComponentDataを用いて移動/回転/拡縮を行う場合には必要となる。
-                //      - 逆に後述のMeshInstanceRendererSystemで必要となる「LocalToWorld」と言うComponentData(データとしてはfloat4x4の行列)に直接値を入れて動かす形であればこのシステムは不要となる。
                 World.Active.CreateManager(typeof(EndFrameTransformSystem));
 
-                // デフォルトで用意されているPureECSで描画を行うためのシステムである「MeshInstanceRendererSystem」の補助クラス
-                //      - 動かす為に必要なComponentDataとしては「MeshInstanceRenderer」と「LocalToWorld」が必要。
+                // デフォルトで用意されているPureECSで描画を行うためのComponentSystemである「MeshInstanceRendererSystem」の補助クラス
                 World.Active.CreateManager(typeof(RenderingSystemBootstrap));
             }
 
@@ -77,8 +74,9 @@ namespace MainContents
             // - ランダムな位置に表示させるための「Position」
             // - 表示データとなる「MeshInstanceRenderer」
             // 
-            // ※後は例として敢えてシンボルで区切っているが、「ENABLE_SCALE」を定義することで拡縮が有効となり、
-            //   サンプルの挙動としては各Entityのサイズをランダムな大きさに変更する挙動となる。
+            // ※後はデフォルトだとシンボルで区切って無効状態にしているが、
+            // 　「ENABLE_SCALE」と言うシンボルを定義することでEntityの拡縮を有効にし、
+            // 　サンプルの挙動に「各Entityのサイズをランダムな大きさに変更する」処理を付け加えることが可能となっている。
             var archetype = entityManager.CreateArchetype(
                 ComponentType.Create<Position>(),
 #if ENABLE_SCALE
